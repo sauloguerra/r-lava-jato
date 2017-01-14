@@ -19,6 +19,8 @@ baixa_pdf <- function(url, historico) {
       link <- html.links[i]
       if (!(link %in% historico)){
         print(link)
+        write.table(link, "files/historico.txt",
+                    row.names = FALSE, col.names = FALSE, append = TRUE) #TODO: logica errada
         historico <- c(historico, link)
         if (!is.na(link)) {
           baixa_pdf(link, historico)
@@ -26,12 +28,10 @@ baixa_pdf <- function(url, historico) {
       }
     }
   }
-  write.table(historico, "files/historico.txt", row.names = FALSE, col.names = FALSE)
 }
 
 historico.links <- c()
 historico.links <- read.table("files/historico.txt")
 historico.links$V1 <- as.character(historico.links$V1)
 historico.links <- historico.links[,c('V1')]
-
 baixa_pdf("http://lavajato.mpf.mp.br/", historico.links)
