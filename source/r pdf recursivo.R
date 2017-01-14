@@ -7,7 +7,7 @@ setwd("~/Development/R/R-lava-jato")
 baixa_pdf <- function(url, historico) {
   req <- curl_fetch_memory(url)
   if (any(str_detect(parse_headers(req$headers), ".*application/pdf.*"))) {
-    tmp <- paste0(getwd(), "/files/", str_replace_all(req$url, "/", ""), ".pdf")
+    tmp <- paste0(getwd(), "/files/", str_replace_all(req$url, "http://lavajato.mpf.mp.br|/", ""), ".pdf")
     curl_download(req$url, tmp)
     return(NULL)
   }
@@ -26,6 +26,7 @@ baixa_pdf <- function(url, historico) {
       }
     }
   }
+  write.table(historico, "files/historico.txt", row.names = FALSE, col.names = FALSE)
 }
 
 historico.links <- c()
